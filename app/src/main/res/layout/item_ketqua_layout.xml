@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_margin="1dp"
+    android:background="@drawable/buttone">
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+       >
+
+        <TextView
+            android:id="@+id/tv_cau_ketqua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="câu 1"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.99">
+
+        <ImageView
+            android:layout_alignParentBottom="true"
+            android:id="@+id/imv_failed_ketqua"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_failed" />
+
+        <ImageView
+            android:layout_alignParentBottom="true"
+            android:id="@+id/imv_true_ketqua"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_tick" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/bm"
+    tools:context="ominext.android.vn.multiplechoice.Activity.CustomExamActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="20dp"
+        android:text="CHỌN ĐỀ"
+        android:layout_marginBottom="20dp"
+        android:textColor="#1d8fcf"
+        android:textSize="24sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Hình thức thi:"
+            android:textColor="#11184b"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_chay_ban"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Chạy bàn" />
+
+            <RadioButton
+                android:id="@+id/rb_thi_giay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Thi giấy" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chọn số câu:"
+                android:textColor="#11184b"
+                android:textSize="20sp" />
+
+
+            <TextView
+                android:id="@+id/tv_chon_so_cau"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:gravity="center"
+                android:text="20 câu"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/sb_chon_so_cau"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="2.5" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thời gian thi:"
+            android:textColor="#11184b"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_thoi_gian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
+            android:text="20 phút"
+            android:textColor="#000000" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_batdauthi"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:background="@drawable/buttonb"
+            android:text="Bắt đầu"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+    </LinearLayout>
+
+    <TextView
+    android:layout_marginTop="30dp"
+    android:visibility="gone"
+    android:id="@+id/tv_status_rdb"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="bạn chưa chọn hình thức thi!"
+    android:textColor="#f10010"
+    android:textSize="14sp" />
+    <TextView
+        android:layout_marginTop="30dp"
+        android:visibility="gone"
+        android:id="@+id/tv_status_sb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số câu không thể là 0"
+        android:textColor="#f10010"
+        android:textSize="14sp" />
+
+</LinearLayout>

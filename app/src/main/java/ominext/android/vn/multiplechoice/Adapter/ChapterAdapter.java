@@ -59,43 +59,43 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
                     String sochuong = tvIdChapter.getText().toString();
                     switch (sochuong) {
                         case "1":
-                            typeQuery = "select * from CauHoi where SoChuong = 1 ";
+                            typeQuery = "select * from Question where CHAPTER = 1 ";
                             break;
                         case "2":
-                            typeQuery = "select * from CauHoi where SoChuong = 2 ";
+                            typeQuery = "select * from Question where CHAPTER = 2 ";
                             break;
                         case "3":
-                            typeQuery = "select * from CauHoi where SoChuong = 3 ";
+                            typeQuery = "select * from Question where CHAPTER = 3 ";
                             break;
                         case "4":
-                            typeQuery = "select * from CauHoi where SoChuong = 4 ";
+                            typeQuery = "select * from Question where CHAPTER = 4 ";
                             break;
                         case "5":
-                            typeQuery = "select * from CauHoi where SoChuong = 5 ";
+                            typeQuery = "select * from Question where CHAPTER = 5 ";
                             break;
                         case "6":
-                            typeQuery = "select * from CauHoi where SoChuong = 6 ";
+                            typeQuery = "select * from Question where CHAPTER = 6 ";
                             break;
                         case "7":
-                            typeQuery = "select * from CauHoi where SoChuong = 7 ";
+                            typeQuery = "select * from Question where CHAPTER = 7 ";
                             break;
                         case "8":
-                            typeQuery = "select * from CauHoi where SoChuong = 8 ";
+                            typeQuery = "select * from Question where CHAPTER = 8 ";
                             break;
                         case "9":
-                            typeQuery = "select * from CauHoi where SoChuong = 9 ";
+                            typeQuery = "select * from Question where CHAPTER = 9 ";
                             break;
                         case "10":
-                            typeQuery = "select * from CauHoi where SoChuong = 10 ";
+                            typeQuery = "select * from Question where CHAPTER = 10 ";
                             break;
                         case "11":
-                            typeQuery = "select * from CauHoi where SoChuong = 11 ";
+                            typeQuery = "select * from Question where CHAPTER = 11 ";
                             break;
                         case "12":
-                            typeQuery = "select * from CauHoi where SoChuong = 12 ";
+                            typeQuery = "select * from Question where CHAPTER = 12 ";
                             break;
                         case "13":
-                            typeQuery = "select * from CauHoi where SoChuong = 13 ";
+                            typeQuery = "select * from Question where CHAPTER = 13 ";
                             break;
                     }
                     intent.putExtra("typeQuery", typeQuery);

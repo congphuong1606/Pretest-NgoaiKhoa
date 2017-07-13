@@ -30,14 +30,17 @@ String typeQuery;
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_tuchon:
+                Intent ie=new Intent(MainActivity.this, CustomExamActivity.class);
+                startActivity(ie);
                 break;
             case R.id.btn_chonchuong:
                 Intent i=new Intent(MainActivity.this, ListChapterActivity.class);
                 startActivity(i);
                 break;
             case R.id.btn_luyentap:
-                typeQuery = "select * from CauHoi";
+
                 Intent intent=new Intent(MainActivity.this, QuizActivity.class);
+                typeQuery = "select * from Question ORDER BY RANDOM() LIMIT 100";
                 intent.putExtra("typeQuery", typeQuery);
                 startActivity(intent);
                 break;

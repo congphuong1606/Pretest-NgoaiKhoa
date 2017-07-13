@@ -20,7 +20,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.ListChapterActivity" />
-        <activity android:name=".Activity.QuizActivity"></activity>
+        <activity android:name=".Activity.QuizActivity" />
+        <activity android:name=".Activity.CustomExamActivity" />
+        <activity android:name=".Activity.ShowKetQuaActivity"></activity>
     </application>
 
 </manifest>

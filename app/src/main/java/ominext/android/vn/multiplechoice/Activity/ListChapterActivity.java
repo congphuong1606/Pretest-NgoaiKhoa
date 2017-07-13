@@ -42,7 +42,7 @@ public class ListChapterActivity extends AppCompatActivity {
 
     private void readData() {
         database = Database.initDatabase(ListChapterActivity.this, DATABASE_NAME);
-        Cursor cursor = database.rawQuery("select * from Chuong ", null);
+        Cursor cursor = database.rawQuery("select * from Chapter ", null);
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
             cursor.moveToPosition(i);

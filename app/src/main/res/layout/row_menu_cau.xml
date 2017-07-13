@@ -3,6 +3,7 @@
     android:layout_width="80dp"
     android:layout_height="50dp"
     android:paddingTop="5dp"
+
     android:orientation="vertical"
     android:descendantFocusability="blocksDescendants"
     android:paddingLeft="10dp"
@@ -13,7 +14,7 @@
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:background="@drawable/button"
+        android:background="@drawable/buttonb"
         android:id="@+id/imb_menu_cau"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

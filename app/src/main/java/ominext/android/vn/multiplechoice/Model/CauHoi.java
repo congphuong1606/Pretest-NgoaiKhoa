@@ -1,10 +1,13 @@
 package ominext.android.vn.multiplechoice.Model;
-public class CauHoi {
+
+import java.io.Serializable;
+
+public class CauHoi implements Serializable {
 
 	private int mId;
-	private String mSoChuong;
+	private int mSoChuong;
 	private String mCauHoi;
-	private String mDapAn;
+	private int mDapAn;
 	private String mCauA;
 	private String mCauB;
 	private String mCauC;
@@ -13,14 +16,27 @@ public class CauHoi {
 	private String mGiaiThich;
 	private int mluaChon;
 
-	public CauHoi( int mId) {
+
+
+	public CauHoi(int mId, int mSoChuong, String mCauHoi, int mDapAn, String mCauA, String mCauB, String mCauC, String mCauD, String mCauE, String mGiaiThich, int mluaChon) {
 		this.mId = mId;
+		this.mSoChuong = mSoChuong;
+		this.mCauHoi = mCauHoi;
+		this.mDapAn = mDapAn;
+		this.mCauA = mCauA;
+		this.mCauB = mCauB;
+		this.mCauC = mCauC;
+		this.mCauD = mCauD;
+		this.mCauE = mCauE;
+		this.mGiaiThich = mGiaiThich;
+		this.mluaChon = mluaChon;
 	}
 
 
 
-	public CauHoi(int mId, String mSoChuong, String mCauHoi,
-				  String mDapAn, String mCauA, String mCauB,
+
+	public CauHoi(int mId, int mSoChuong, String mCauHoi,
+				  int mDapAn, String mCauA, String mCauB,
 				  String mCauC, String mCauD, String mCauE, int mLuaChon) {
 		this.mId = mId;
 		this.mSoChuong = mSoChuong;
@@ -35,18 +51,6 @@ public class CauHoi {
 
 	}
 
-	public CauHoi(int mId, String mSoChuong, String mCauHoi, String mDapAn, String mCauA, String mCauB, String mCauC, String mCauD, String mCauE, String mGiaiThich) {
-		this.mId = mId;
-		this.mSoChuong = mSoChuong;
-		this.mCauHoi = mCauHoi;
-		this.mDapAn = mDapAn;
-		this.mCauA = mCauA;
-		this.mCauB = mCauB;
-		this.mCauC = mCauC;
-		this.mCauD = mCauD;
-		this.mCauE = mCauE;
-		this.mGiaiThich = mGiaiThich;
-	}
 
 	public int getmId() {
 		return mId;
@@ -56,11 +60,11 @@ public class CauHoi {
 		this.mId = mId;
 	}
 
-	public String getmSoChuong() {
+	public int getmSoChuong() {
 		return mSoChuong;
 	}
 
-	public void setmSoChuong(String mSoChuong) {
+	public void setmSoChuong(int mSoChuong) {
 		this.mSoChuong = mSoChuong;
 	}
 
@@ -72,11 +76,11 @@ public class CauHoi {
 		this.mCauHoi = mCauHoi;
 	}
 
-	public String getmDapAn() {
+	public int getmDapAn() {
 		return mDapAn;
 	}
 
-	public void setmDapAn(String mDapAn) {
+	public void setmDapAn(int mDapAn) {
 		this.mDapAn = mDapAn;
 	}
 

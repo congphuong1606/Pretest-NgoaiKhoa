@@ -1,6 +1,5 @@
 package ominext.android.vn.multiplechoice.Activity;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -39,6 +37,22 @@ public class QuizActivity extends AppCompatActivity {
     ActionBarDrawerToggle actionBarDrawerToggle;
     ArrayList<CauHoi> cauHoiList = new ArrayList<>();
     ArrayList<Cau> caus = new ArrayList<Cau>();
+    @BindView(R.id.rb_aq)
+    RadioButton rbAq;
+    @BindView(R.id.rb_bq)
+    RadioButton rbBq;
+    @BindView(R.id.rb_cq)
+    RadioButton rbCq;
+    @BindView(R.id.rb_dq)
+    RadioButton rbDq;
+    @BindView(R.id.rb_eq)
+    RadioButton rbEq;
+    @BindView(R.id.tv_index)
+    TextView tvIndex;
+    @BindView(R.id.tv_back)
+    TextView tvBack;
+    @BindView(R.id.tv_next)
+    TextView tvNext;
     private String giaithich;
     private int luaChon;
     private float lastTranslate = 0.0f;
@@ -61,30 +75,12 @@ public class QuizActivity extends AppCompatActivity {
     DrawerLayout mydrawer;
     @BindView(R.id.content_layout)
     FrameLayout contentLayout;
-    @BindView(R.id.tv_so_cau)
-    TextView tvSoCau;
-    @BindView(R.id.tv_score)
-    TextView tvScore;
     @BindView(R.id.tv_time)
     TextView tvTime;
     @BindView(R.id.progressbar)
     ProgressBar progressbar;
     @BindView(R.id.tv_question)
     TextView tvQuestion;
-    @BindView(R.id.rb_a)
-    RadioButton rbA;
-    @BindView(R.id.rb_b)
-    RadioButton rbB;
-    @BindView(R.id.rb_c)
-    RadioButton rbC;
-    @BindView(R.id.rb_d)
-    RadioButton rbD;
-    @BindView(R.id.rb_e)
-    RadioButton rbE;
-    @BindView(R.id.imb_next)
-    ImageButton imbNext;
-    @BindView(R.id.imb_back)
-    ImageButton imbBack;
 
 
     @Override
@@ -94,7 +90,7 @@ public class QuizActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
         typeQuery = (String) bundle.get("typeQuery");
-        updateDatabase();
+        readCauhois();
         setQuestionView();
         startGame();
         timer = new Timer();
@@ -104,15 +100,8 @@ public class QuizActivity extends AppCompatActivity {
                 handler.sendEmptyMessage(1);
             }
         }, 1000, 1000);
-
-        CauAdapter adapter = new CauAdapter(this, caus);
-
+        CauAdapter adapter = new CauAdapter(this, cauHoiList);
         lvMenu.setAdapter(adapter);
-        for (int i = 1; i <= cout; i++) {
-            String title = "Câu " + i;
-            caus.add(new Cau(title));
-        }
-        adapter.notifyDataSetChanged();
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, mydrawer, R.string.app_name, R.string.app_name) {
             public void onDrawerClosed(View view) {
                 supportInvalidateOptionsMenu();
@@ -157,20 +146,35 @@ public class QuizActivity extends AppCompatActivity {
 
     }
 
-
-    private void updateDatabase() {
-        int valueLuachon = 10;
-        ContentValues values = new ContentValues();
-        values.put("LuaChon", valueLuachon);
+    private void readCauhois() {
         SQLiteDatabase db = Database.initDatabase(QuizActivity.this, DATABASE_NAME);
         Cursor cursor = db.rawQuery(typeQuery, null);
-        dem = cursor.getCount();
-        for (int j = 0; j < dem; j++) {
-            db.update("CauHoi", values, "id= ?", new String[]{j + 1 + ""});
+        cauHoiList.clear();
+        cout = cursor.getCount();
+        if (cursor != null && cout > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    int idCauhoi = cursor.getInt(0);
+                    int soChuong = cursor.getInt(1);
+                    String question = cursor.getString(2);
+                    int dapan = cursor.getInt(3);
+                    String a = cursor.getString(4);
+                    String b = cursor.getString(5);
+                    String c = cursor.getString(6);
+                    String d = cursor.getString(7);
+                    String e = cursor.getString(8);
+                    String giathich = cursor.getString(10);
+                    int luaChon = 10;
+                    cauHoiList.add(new CauHoi(idCauhoi, soChuong, question, dapan,
+                            a, b, c, d, e, giathich, luaChon));
+                } while (cursor.moveToNext());
+            }
         }
         cursor.close();
         db.close();
     }
+
+
 
     public void startGame() {
         handler = new Handler() {
@@ -194,32 +198,28 @@ public class QuizActivity extends AppCompatActivity {
     private void setQuestionView() {
         time = 30;
         prosetbar = 30;
-        SQLiteDatabase db = Database.initDatabase(QuizActivity.this, DATABASE_NAME);
-        Cursor cursor = db.rawQuery(typeQuery, null);
-        cout = cursor.getCount();
-        cursor.moveToPosition(i);
-        soChuong = cursor.getInt(1);
-        idCauhoi = cursor.getInt(0);
-        tvQuestion.setText(cursor.getString(2));
-        rbA.setText(cursor.getString(4));
-        rbB.setText(cursor.getString(5));
-        rbC.setText(cursor.getString(6));
-        rbD.setText(cursor.getString(7));
-        rbE.setText(cursor.getString(8));
-        giaithich = cursor.getString(9);
-        luaChon = cursor.getInt(10);
-        s = cursor.getInt(3);
-        tvScore.setText(score + "");
-        tvSoCau.setText(i + 1 + "");
+        if (i >= cout) {
+            return;
+        }
+        CauHoi cauHoi = cauHoiList.get(i);
+        soChuong = cauHoi.getmSoChuong();
+        idCauhoi = cauHoi.getmId();
+        tvQuestion.setText(cauHoi.getmCauHoi());
+        rbAq.setText(cauHoi.getmCauA());
+        rbBq.setText(cauHoi.getmCauB());
+        rbCq.setText(cauHoi.getmCauC());
+        rbDq.setText(cauHoi.getmCauD());
+        rbEq.setText(cauHoi.getmCauE());
+        luaChon = cauHoi.getMluaChon();
+        s = cauHoi.getmDapAn();
+        tvIndex.setText((i + 1 )+ "/"+cout);
         setChecked();
         i++;
         if (i > 1) {
-            imbBack.setVisibility(View.VISIBLE);
+            tvBack.setVisibility(View.VISIBLE);
         } else {
-            imbBack.setVisibility(View.GONE);
+            tvBack.setVisibility(View.GONE);
         }
-        cursor.close();
-        db.close();
     }
 
     private void backQuestion() {
@@ -239,9 +239,7 @@ public class QuizActivity extends AppCompatActivity {
             setQuestionView();
         } else {
             Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
-            Bundle b = new Bundle();
-            b.putInt("score", score); //Your score
-            intent.putExtras(b);
+            intent.putExtra("Arraylist", cauHoiList);
             startActivity(intent);
             finish();
         }
@@ -249,123 +247,122 @@ public class QuizActivity extends AppCompatActivity {
 
     private void upDateAnswer() {
         int number = answer;
-        ContentValues values = new ContentValues();
-        values.put("LuaChon", number);
-        SQLiteDatabase db = Database.initDatabase(QuizActivity.this, DATABASE_NAME);
-        db.update("CauHoi", values, "id= ?", new String[]{idCauhoi + ""});
-        db.close();
+        CauHoi cauHoi = cauHoiList.get(i - 1);
+        cauHoi.setMluaChon(number);
     }
 
-    @OnClick({R.id.rb_a, R.id.rb_b, R.id.rb_c, R.id.rb_d, R.id.rb_e, R.id.imb_next, R.id.imb_back})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.rb_a:
-                answer = 1;
-                rbA.setTextColor(getResources().getColor(R.color.colorAccent));
-                rbB.setTextColor(getResources().getColor(R.color.b));
-                rbC.setTextColor(getResources().getColor(R.color.b));
-                rbD.setTextColor(getResources().getColor(R.color.b));
-                rbE.setTextColor(getResources().getColor(R.color.b));
-                upDateAnswer();
-                break;
-            case R.id.rb_b:
-                answer = 2;
-                rbA.setTextColor(getResources().getColor(R.color.b));
-                rbB.setTextColor(getResources().getColor(R.color.colorAccent));
-                rbC.setTextColor(getResources().getColor(R.color.b));
-                rbD.setTextColor(getResources().getColor(R.color.b));
-                rbE.setTextColor(getResources().getColor(R.color.b));
-
-                upDateAnswer();
-                break;
-            case R.id.rb_c:
-                answer = 3;
-                rbA.setTextColor(getResources().getColor(R.color.b));
-                rbB.setTextColor(getResources().getColor(R.color.b));
-                rbC.setTextColor(getResources().getColor(R.color.colorAccent));
-                rbD.setTextColor(getResources().getColor(R.color.b));
-                rbE.setTextColor(getResources().getColor(R.color.b));
-                upDateAnswer();
-                break;
-            case R.id.rb_d:
-                answer = 4;
-                rbA.setTextColor(getResources().getColor(R.color.b));
-                rbB.setTextColor(getResources().getColor(R.color.b));
-                rbC.setTextColor(getResources().getColor(R.color.b));
-                rbD.setTextColor(getResources().getColor(R.color.colorAccent));
-                rbE.setTextColor(getResources().getColor(R.color.b));
-                upDateAnswer();
-                break;
-            case R.id.rb_e:
-                answer = 5;
-                rbA.setTextColor(getResources().getColor(R.color.b));
-                rbB.setTextColor(getResources().getColor(R.color.b));
-                rbC.setTextColor(getResources().getColor(R.color.b));
-                rbD.setTextColor(getResources().getColor(R.color.b));
-                rbE.setTextColor(getResources().getColor(R.color.colorAccent));
-                upDateAnswer();
-                break;
-            case R.id.imb_next:
-                nextQuestion();
-                break;
-            case R.id.imb_back:
-                backQuestion();
-                break;
-        }
-    }
 
     private void setChecked() {
 
         if (luaChon == 1) {
             RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
-            radioGroup1.check(rbA.getId());
-            rbA.setTextColor(getResources().getColor(R.color.colorAccent));
-            rbB.setTextColor(getResources().getColor(R.color.b));
-            rbC.setTextColor(getResources().getColor(R.color.b));
-            rbD.setTextColor(getResources().getColor(R.color.b));
-            rbE.setTextColor(getResources().getColor(R.color.b));
+            radioGroup1.check(rbAq.getId());
+            rbAq.setTextColor(getResources().getColor(R.color.sai));
+            rbBq.setTextColor(getResources().getColor(R.color.b));
+            rbCq.setTextColor(getResources().getColor(R.color.b));
+            rbDq.setTextColor(getResources().getColor(R.color.b));
+            rbEq.setTextColor(getResources().getColor(R.color.b));
         } else if (luaChon == 2) {
             RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
-            radioGroup1.check(rbB.getId());
-            rbA.setTextColor(getResources().getColor(R.color.b));
-            rbB.setTextColor(getResources().getColor(R.color.colorAccent));
-            rbC.setTextColor(getResources().getColor(R.color.b));
-            rbD.setTextColor(getResources().getColor(R.color.b));
-            rbE.setTextColor(getResources().getColor(R.color.b));
+            radioGroup1.check(rbBq.getId());
+            rbAq.setTextColor(getResources().getColor(R.color.b));
+            rbBq.setTextColor(getResources().getColor(R.color.sai));
+            rbCq.setTextColor(getResources().getColor(R.color.b));
+            rbDq.setTextColor(getResources().getColor(R.color.b));
+            rbEq.setTextColor(getResources().getColor(R.color.b));
         } else if (luaChon == 3) {
             RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
-            radioGroup1.check(rbC.getId());
-            rbA.setTextColor(getResources().getColor(R.color.b));
-            rbB.setTextColor(getResources().getColor(R.color.b));
-            rbC.setTextColor(getResources().getColor(R.color.colorAccent));
-            rbD.setTextColor(getResources().getColor(R.color.b));
-            rbE.setTextColor(getResources().getColor(R.color.b));
+            radioGroup1.check(rbCq.getId());
+            rbAq.setTextColor(getResources().getColor(R.color.b));
+            rbBq.setTextColor(getResources().getColor(R.color.b));
+            rbCq.setTextColor(getResources().getColor(R.color.sai));
+            rbDq.setTextColor(getResources().getColor(R.color.b));
+            rbEq.setTextColor(getResources().getColor(R.color.b));
         } else if (luaChon == 4) {
             RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
-            radioGroup1.check(rbD.getId());
-            rbA.setTextColor(getResources().getColor(R.color.b));
-            rbB.setTextColor(getResources().getColor(R.color.b));
-            rbC.setTextColor(getResources().getColor(R.color.b));
-            rbD.setTextColor(getResources().getColor(R.color.colorAccent));
-            rbE.setTextColor(getResources().getColor(R.color.b));
+            radioGroup1.check(rbDq.getId());
+            rbAq.setTextColor(getResources().getColor(R.color.b));
+            rbBq.setTextColor(getResources().getColor(R.color.b));
+            rbCq.setTextColor(getResources().getColor(R.color.b));
+            rbDq.setTextColor(getResources().getColor(R.color.sai));
+            rbEq.setTextColor(getResources().getColor(R.color.b));
         } else if (luaChon == 5) {
             RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
-            radioGroup1.check(rbE.getId());
-            rbA.setTextColor(getResources().getColor(R.color.b));
-            rbB.setTextColor(getResources().getColor(R.color.b));
-            rbC.setTextColor(getResources().getColor(R.color.b));
-            rbD.setTextColor(getResources().getColor(R.color.b));
-            rbE.setTextColor(getResources().getColor(R.color.colorAccent));
+            radioGroup1.check(rbEq.getId());
+            rbAq.setTextColor(getResources().getColor(R.color.b));
+            rbBq.setTextColor(getResources().getColor(R.color.b));
+            rbCq.setTextColor(getResources().getColor(R.color.b));
+            rbDq.setTextColor(getResources().getColor(R.color.b));
+            rbEq.setTextColor(getResources().getColor(R.color.sai));
         } else {
             RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.radioGroup1);
             radioGroup1.clearCheck();
-            rbA.setTextColor(getResources().getColor(R.color.b));
-            rbB.setTextColor(getResources().getColor(R.color.b));
-            rbC.setTextColor(getResources().getColor(R.color.b));
-            rbD.setTextColor(getResources().getColor(R.color.b));
-            rbE.setTextColor(getResources().getColor(R.color.b));
+            rbAq.setTextColor(getResources().getColor(R.color.b));
+            rbBq.setTextColor(getResources().getColor(R.color.b));
+            rbCq.setTextColor(getResources().getColor(R.color.b));
+            rbDq.setTextColor(getResources().getColor(R.color.b));
+            rbEq.setTextColor(getResources().getColor(R.color.b));
         }
     }
 
+
+    @OnClick({R.id.rb_aq, R.id.rb_bq, R.id.rb_cq, R.id.rb_dq, R.id.rb_eq, R.id.tv_next, R.id.tv_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rb_aq:
+                answer = 1;
+                rbAq.setTextColor(getResources().getColor(R.color.sai));
+                rbBq.setTextColor(getResources().getColor(R.color.b));
+                rbCq.setTextColor(getResources().getColor(R.color.b));
+                rbDq.setTextColor(getResources().getColor(R.color.b));
+                rbEq.setTextColor(getResources().getColor(R.color.b));
+                upDateAnswer();
+                break;
+            case R.id.rb_bq:
+                answer = 2;
+                rbAq.setTextColor(getResources().getColor(R.color.b));
+                rbBq.setTextColor(getResources().getColor(R.color.sai));
+                rbCq.setTextColor(getResources().getColor(R.color.b));
+                rbDq.setTextColor(getResources().getColor(R.color.b));
+                rbEq.setTextColor(getResources().getColor(R.color.b));
+
+                upDateAnswer();
+                break;
+            case R.id.rb_cq:
+                answer = 3;
+                rbAq.setTextColor(getResources().getColor(R.color.b));
+                rbBq.setTextColor(getResources().getColor(R.color.b));
+                rbCq.setTextColor(getResources().getColor(R.color.sai));
+                rbDq.setTextColor(getResources().getColor(R.color.b));
+                rbEq.setTextColor(getResources().getColor(R.color.b));
+                upDateAnswer();
+                break;
+            case R.id.rb_dq:
+                answer = 4;
+                rbAq.setTextColor(getResources().getColor(R.color.b));
+                rbBq.setTextColor(getResources().getColor(R.color.b));
+                rbCq.setTextColor(getResources().getColor(R.color.b));
+                rbDq.setTextColor(getResources().getColor(R.color.sai));
+                rbEq.setTextColor(getResources().getColor(R.color.b));
+                upDateAnswer();
+
+                break;
+            case R.id.rb_eq:
+                answer = 5;
+                rbAq.setTextColor(getResources().getColor(R.color.b));
+                rbBq.setTextColor(getResources().getColor(R.color.b));
+                rbCq.setTextColor(getResources().getColor(R.color.b));
+                rbDq.setTextColor(getResources().getColor(R.color.b));
+                rbEq.setTextColor(getResources().getColor(R.color.sai));
+                upDateAnswer();
+                break;
+            case R.id.tv_next:
+                nextQuestion();
+                break;
+            case R.id.tv_back:
+                backQuestion();
+                break;
+        }
+    }
 
 }
